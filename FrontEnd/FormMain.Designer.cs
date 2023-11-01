@@ -23,12 +23,88 @@
         ///  the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "Form1";
+            btnLoad = new Button();
+            btnSave = new Button();
+            btnDelete = new Button();
+            opnOpen = new OpenFileDialog();
+            savSave = new SaveFileDialog();
+            lstSoubory = new ListBox();
+            SuspendLayout();
+            // 
+            // btnLoad
+            // 
+            btnLoad.Location = new Point(12, 12);
+            btnLoad.Name = "btnLoad";
+            btnLoad.Size = new Size(112, 34);
+            btnLoad.TabIndex = 1;
+            btnLoad.Text = "Nahrát soubory...";
+            btnLoad.UseVisualStyleBackColor = true;
+            btnLoad.Click += btnLoad_Click;
+            // 
+            // btnSave
+            // 
+            btnSave.Enabled = false;
+            btnSave.Location = new Point(116, 233);
+            btnSave.Name = "btnSave";
+            btnSave.Size = new Size(86, 34);
+            btnSave.TabIndex = 2;
+            btnSave.Text = "Uložit...";
+            btnSave.UseVisualStyleBackColor = true;
+            btnSave.Click += btnSave_Click;
+            // 
+            // btnDelete
+            // 
+            btnDelete.Enabled = false;
+            btnDelete.Location = new Point(277, 12);
+            btnDelete.Name = "btnDelete";
+            btnDelete.Size = new Size(30, 34);
+            btnDelete.TabIndex = 3;
+            btnDelete.Text = "X";
+            btnDelete.UseVisualStyleBackColor = true;
+            btnDelete.Click += btnDelete_Click;
+            // 
+            // opnOpen
+            // 
+            opnOpen.Filter = "XML soubory|*.xml|Všechny soubory|*.*";
+            opnOpen.Multiselect = true;
+            // 
+            // savSave
+            // 
+            savSave.DefaultExt = "csv";
+            savSave.Filter = "CSV soubory|*.csv";
+            // 
+            // lstSoubory
+            // 
+            lstSoubory.FormattingEnabled = true;
+            lstSoubory.ItemHeight = 15;
+            lstSoubory.Location = new Point(12, 52);
+            lstSoubory.Name = "lstSoubory";
+            lstSoubory.Size = new Size(295, 169);
+            lstSoubory.TabIndex = 4;
+            lstSoubory.SelectedValueChanged += lstSoubory_SelectedValueChanged;
+            // 
+            // FormMain
+            // 
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(319, 278);
+            Controls.Add(lstSoubory);
+            Controls.Add(btnDelete);
+            Controls.Add(btnSave);
+            Controls.Add(btnLoad);
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "FormMain";
+            Text = "Zaměstnanecký tabulkovátor 3000";
+            ResumeLayout(false);
         }
 
         #endregion
+        private Button btnLoad;
+        private Button btnSave;
+        private Button btnDelete;
+        private OpenFileDialog opnOpen;
+        private SaveFileDialog savSave;
+        private ListBox lstSoubory;
     }
 }
