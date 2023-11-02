@@ -11,6 +11,7 @@ namespace BackEnd {
     public class Converter {
         private Config _config;
         private List<Employer> _deserialised;
+        private static readonly log4net.ILog _log = log4net.LogManager.GetLogger("Converter.cs");
 
         public Converter(Config config) {
             if (!config.ValidateConfig()) {
@@ -21,6 +22,7 @@ namespace BackEnd {
         }
 
         public void Work() {
+            _log.Info($"Započata konverze do {_config.OutputPath}.");
             Deserialize();
             FilterUnemployed();
             MergeEmployers();
@@ -56,10 +58,8 @@ namespace BackEnd {
             foreach (Employer emp in _deserialised) {
                 Employer? matching = merged.Find(x => x.CompanyName == emp.CompanyName);
                 if (matching == null) {
-                    Debug.Print($"Not found, adding");
                     merged.Add(emp);
                 } else {
-                    Debug.Print($"Found, merging");
                     if (matching.Employees == null || emp.Employees == null) continue;
                     matching.Employees = matching.Employees.Concat(emp.Employees).ToList();
                 }
@@ -79,7 +79,7 @@ namespace BackEnd {
             foreach (Employer employer in _deserialised) {
                 if (employer.Employees == null) continue;
                 foreach (Employee employee in employer.Employees) {
-                    employee.Company = employer;
+                    employee.ParentEmployer = employer;
                 }
             }
         }

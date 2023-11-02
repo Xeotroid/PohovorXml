@@ -23,6 +23,7 @@ namespace BackEnd {
     }
 
     public class Employee : IComparable<Employee> {
+        static readonly log4net.ILog _log = LogHelper.GetLogger();
         [XmlElement]
         public int Id { get; set; }
         [XmlElement]
@@ -34,7 +35,7 @@ namespace BackEnd {
         [XmlElement]
         public string? EmployedSince { get; set; }
 
-        public Employer? Company { get; set; }
+        public Employer? ParentEmployer { get; set; }
 
         public int GetEmployeeNumber() {
             return Id;
@@ -42,12 +43,13 @@ namespace BackEnd {
 
         public string GetFullName() {
             if (string.IsNullOrEmpty(FirstName) || string.IsNullOrEmpty(LastName)) {
-                throw new NullReferenceException("Jmeno nebo prijmeni je prazdne!");
+                _log.Error($"Jméno nebo příjmení zaměstnance {Id} není uvedeno.");
+                return "CHYBA";
             }
 
             string first = FirstName.FirstUpper();
             string last = LastName.FirstUpper();
-            return $"{first} {last}";
+            return $"{last} {first}";
         }
 
         public string GetEmployedSince() {
@@ -55,7 +57,8 @@ namespace BackEnd {
             if(DateTime.TryParse(EmployedSince, out DateTime dt)) {
                 return dt.ToString("yyyy-MM-dd");
             }
-            throw new FormatException("Nesprávný formát datumu!");
+            _log.Error($"EmployedSince zaměstnance {Id} je ve špatném formátu.");
+            return "CHYBA";
         }
 
         public int CompareTo(Employee? other) {
@@ -67,6 +70,7 @@ namespace BackEnd {
     }
 
     public class AddressElement {
+        static readonly log4net.ILog _log = LogHelper.GetLogger();
         [XmlElement]
         public string? Street { get; set; }
         [XmlElement]
@@ -74,9 +78,16 @@ namespace BackEnd {
         [XmlElement]
         public string? City { get; set; }
 
+        public Employee? ParentEmployee;
+
         public string GetFullAddress() {
             if (string.IsNullOrEmpty(City)) {
-                throw new FormatException("Neznámé město zaměstnance!");
+                if(ParentEmployee == null) {
+                    _log.Error("Není uvedeno město neznámého zaměstnance.");
+                } else {
+                    _log.Error($"Není uvedeno město zaměstnance {ParentEmployee.Id}.");
+                }                
+                return "CHYBA";
             }
             if (string.IsNullOrEmpty(Street)) {
                 return City;
