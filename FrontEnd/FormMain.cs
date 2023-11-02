@@ -1,3 +1,4 @@
+using log4net;
 using Microsoft.VisualBasic;
 using System.Diagnostics;
 using System.IO;
@@ -5,10 +6,14 @@ using System.IO;
 namespace FrontEnd {
     public partial class FormMain : Form {
         private BackEnd.Config _config;
+        private static log4net.ILog? _log;
 
         public FormMain() {
             InitializeComponent();
             _config = new();
+            //"One important thing to note is that your main runnable project MUST be
+            //the first project that calls the LogManager.GetLogger method."
+            _log = log4net.LogManager.GetLogger("FormMain.cs");
         }
 
         private void btnLoad_Click(object sender, EventArgs e) {
@@ -43,9 +48,11 @@ namespace FrontEnd {
             var deserialiser = new BackEnd.Converter(_config);
             try {
                 deserialiser.Work();
+                _log.Info("Konverze dokonèena.");
                 MessageBox.Show("Hotovo.", this.Name, MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex) {
+                _log.Fatal("Pøi konverzi nastala chyba.", ex);
                 MessageBox.Show($"Pøi ukládání nastala chyba:\r\n{ex.Message}", this.Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
