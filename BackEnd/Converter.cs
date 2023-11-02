@@ -20,7 +20,7 @@ namespace BackEnd {
             _deserialised = new();
         }
 
-        public bool Work() {
+        public void Work() {
             Deserialize();
             FilterUnemployed();
             MergeEmployers();
@@ -29,7 +29,6 @@ namespace BackEnd {
             IExporter exporter = new CsvExporter();
             //null warning může být ignorován - config kontrolujeme v konstruktoru
             exporter.SaveTo(_deserialised, _config.OutputPath);
-            return true;
         }
 
         //private:

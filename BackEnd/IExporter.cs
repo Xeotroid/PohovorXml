@@ -6,6 +6,6 @@ using System.Threading.Tasks;
 
 namespace BackEnd {
     internal interface IExporter {
-        public bool SaveTo(List<Employer> inputList, string outputPath);
+        public void SaveTo(List<Employer> inputList, string outputPath);
     }
 }
