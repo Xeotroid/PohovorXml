@@ -8,9 +8,9 @@ using System.Xml.Serialization;
 namespace BackEnd {
     public class Employer : IComparable<Employer> {
         [XmlElement]
-        public string? CompanyName;
+        public string? CompanyName { get; set; }
         [XmlArray]
-        public List<Employee>? Employees;
+        public List<Employee>? Employees { get; set; }
 
         public int CompareTo(Employer? other) {
             if (other == null)
@@ -24,15 +24,17 @@ namespace BackEnd {
 
     public class Employee : IComparable<Employee> {
         [XmlElement]
-        public int Id;
+        public int Id { get; set; }
         [XmlElement]
-        public string? FirstName;
+        public string? FirstName { get; set; }
         [XmlElement]
-        public string? LastName;
+        public string? LastName { get; set; }
         [XmlElement]
-        public AddressElement? Address;
+        public AddressElement? Address { get; set; }
         [XmlElement]
-        public string? EmployedSince;
+        public string? EmployedSince { get; set; }
+
+        public Employer Company { get; set; }
 
         public int GetEmployeeNumber() {
             return Id;
@@ -63,11 +65,11 @@ namespace BackEnd {
 
     public class AddressElement {
         [XmlElement]
-        public string? Street;
+        public string? Street { get; set; }
         [XmlElement]
-        public int? StreetNo;
+        public int? StreetNo { get; set; }
         [XmlElement]
-        public string? City;
+        public string? City { get; set; }
 
         public string GetFullAddress() {
             if (string.IsNullOrEmpty(Street)) {
