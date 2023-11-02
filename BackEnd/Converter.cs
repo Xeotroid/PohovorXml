@@ -27,10 +27,9 @@ namespace BackEnd {
             FilterUnemployed();
             MergeEmployers();
             SortBoth();
-            AddEmployerReferences();
+            AddParentReferences();
             IExporter exporter = new CsvExporter();
-            //null warning může být ignorován - config kontrolujeme v konstruktoru
-            exporter.SaveTo(_deserialised, _config.OutputPath);
+            exporter.SaveTo(_deserialised, _config.OutputPath!);
         }
 
         //private:
@@ -75,11 +74,13 @@ namespace BackEnd {
             _deserialised.Sort();
         }
 
-        private void AddEmployerReferences() {
+        private void AddParentReferences() {
             foreach (Employer employer in _deserialised) {
                 if (employer.Employees == null) continue;
                 foreach (Employee employee in employer.Employees) {
                     employee.ParentEmployer = employer;
+                    if (employee.Address == null) continue;
+                    employee.Address.ParentEmployee ??= employee;
                 }
             }
         }
