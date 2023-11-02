@@ -13,6 +13,8 @@ namespace BackEnd
         [XmlElement]
         public string Street { get; set; } = string.Empty;
         [XmlElement]
+        //Sice velice silně pochybuji, že někde existuje č.p./č.o. 0,
+        //ale pro jistotu nechám nulu jako validní.
         public int? StreetNo { get; set; }
         [XmlElement]
         public string City { get; set; } = string.Empty;
@@ -21,7 +23,7 @@ namespace BackEnd
 
         public string GetFullAddress()
         {
-            if (string.IsNullOrEmpty(City))
+            if (City == "")
             {
                 if (ParentEmployee == null)
                 {
@@ -33,7 +35,7 @@ namespace BackEnd
                 }
                 return "CHYBA";
             }
-            if (string.IsNullOrEmpty(Street))
+            if (Street == "")
             {
                 return City;
             }
