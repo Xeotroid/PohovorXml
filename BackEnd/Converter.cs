@@ -11,22 +11,22 @@ namespace BackEnd {
     public class Converter {
         private Config _config;
         private List<Employer> _deserialised;
-        private static readonly log4net.ILog _log = log4net.LogManager.GetLogger("Converter.cs");
+        private static readonly log4net.ILog _log = LogHelper.GetLogger();
 
         public Converter(Config config) {
-            if (!config.ValidateConfig()) {
-                throw new InvalidDataException();
-            }
             _config = config;
             _deserialised = new();
         }
 
         public void Work() {
+            if (!_config.ValidateConfig()) {
+                throw new InvalidDataException();
+            }
             _log.Info($"Započata konverze do {_config.OutputPath}.");
             Deserialize();
             FilterUnemployed();
             MergeEmployers();
-            SortBoth();
+            SortAll();
             AddParentReferences();
             IExporter exporter = new CsvExporter();
             exporter.SaveTo(_deserialised, _config.OutputPath!);
@@ -47,8 +47,7 @@ namespace BackEnd {
 
         private void FilterUnemployed() {
             foreach (Employer employer in _deserialised) {
-                if (employer.Employees == null) continue;
-                employer.Employees = employer.Employees.Where(x => !string.IsNullOrEmpty(x.EmployedSince)).ToList();
+                employer.RemoveAll(employee => employee.IsUnemployed);
             }
         }
 
@@ -59,17 +58,15 @@ namespace BackEnd {
                 if (matching == null) {
                     merged.Add(emp);
                 } else {
-                    if (matching.Employees == null || emp.Employees == null) continue;
                     matching.Employees = matching.Employees.Concat(emp.Employees).ToList();
                 }
             }
             _deserialised = merged;
         }
 
-        private void SortBoth() {
+        private void SortAll() {
             foreach (Employer employer in _deserialised) {
-                if (employer.Employees == null) continue;
-                employer.Employees.Sort();
+                employer.Sort();
             }
             _deserialised.Sort();
         }

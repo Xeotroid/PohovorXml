@@ -10,7 +10,7 @@ namespace BackEnd {
         public int CompareTo(Employer? other) {
             if (other == null)
                 return 1;
-            if (CompanyName == null)
+            if (CompanyName == string.Empty)
                 return -1;
             else
                 return CompanyName.CompareTo(other.CompanyName);
@@ -19,5 +19,7 @@ namespace BackEnd {
         public void Sort() {
             Employees.Sort();
         }
+
+        public void RemoveAll(Predicate<Employee> predicate) => Employees?.RemoveAll(predicate);
     }
 }

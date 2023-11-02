@@ -17,12 +17,14 @@ namespace BackEnd
 
         public Employer? ParentEmployer { get; set; }
 
+        public bool IsUnemployed => EmployedSince == "";
+
         public int GetEmployeeNumber() {
             return Id;
         }
 
         public string GetFullName() {
-            if (string.IsNullOrEmpty(FirstName) || string.IsNullOrEmpty(LastName)) {
+            if (FirstName == "" || LastName == "") {
                 _log.Error($"Jméno nebo příjmení zaměstnance {Id} není uvedeno.");
                 return "CHYBA";
             }
