@@ -40,7 +40,8 @@ namespace FrontEnd {
             _config.OutputPath = savSave.FileName;
 
             //TODO: nahradit bool nìèím jiným
-            bool result = BackEnd.Deserialiser.Start(_config);
+            var deserialiser = new BackEnd.Deserialiser(_config);
+            bool result = deserialiser.Work();
             Debug.Print(result ? "Úspìch" : "Fail.");
         }
 

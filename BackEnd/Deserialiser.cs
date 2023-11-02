@@ -8,10 +8,16 @@ using System.Threading.Tasks;
 
 namespace BackEnd {
     public class Deserialiser {
-        public static bool Start(Config config) {
+        private Config _config;
+
+        public Deserialiser(Config config) {
+            _config = config;
             if (config.InputPaths.Count == 0 || config.OutputPath == string.Empty) {
-                return false;
+                throw new InvalidDataException();
             }
+        }
+
+        public bool Work() {
             return true;
         }
     }
