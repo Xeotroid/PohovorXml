@@ -28,7 +28,7 @@
             btnDelete = new Button();
             opnOpen = new OpenFileDialog();
             savSave = new SaveFileDialog();
-            lstSoubory = new ListBox();
+            lstFiles = new ListBox();
             SuspendLayout();
             // 
             // btnLoad
@@ -73,29 +73,37 @@
             savSave.DefaultExt = "csv";
             savSave.Filter = "CSV soubory|*.csv";
             // 
-            // lstSoubory
+            // lstFiles
             // 
-            lstSoubory.FormattingEnabled = true;
-            lstSoubory.ItemHeight = 15;
-            lstSoubory.Location = new Point(12, 52);
-            lstSoubory.Name = "lstSoubory";
-            lstSoubory.Size = new Size(295, 169);
-            lstSoubory.TabIndex = 4;
-            lstSoubory.SelectedValueChanged += lstSoubory_SelectedValueChanged;
+            lstFiles.FormattingEnabled = true;
+            lstFiles.ItemHeight = 15;
+            lstFiles.Location = new Point(12, 52);
+            lstFiles.Name = "lstFiles";
+            lstFiles.SelectionMode = SelectionMode.MultiExtended;
+            lstFiles.Size = new Size(295, 169);
+            lstFiles.TabIndex = 4;
+            lstFiles.SelectedValueChanged += lstFiles_SelectedValueChanged;
+            lstFiles.DragDrop += FormMain_DragDrop;
+            lstFiles.DragEnter += FormMain_DragEnter;
             // 
             // FormMain
             // 
+            AllowDrop = true;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(319, 278);
-            Controls.Add(lstSoubory);
+            Controls.Add(lstFiles);
             Controls.Add(btnDelete);
             Controls.Add(btnSave);
             Controls.Add(btnLoad);
             MaximizeBox = false;
+            MaximumSize = new Size(335, 317);
             MinimizeBox = false;
+            MinimumSize = new Size(335, 317);
             Name = "FormMain";
             Text = "Zaměstnanecký tabulkovátor 3000";
+            DragDrop += FormMain_DragDrop;
+            DragEnter += FormMain_DragEnter;
             ResumeLayout(false);
         }
 
@@ -105,6 +113,6 @@
         private Button btnDelete;
         private OpenFileDialog opnOpen;
         private SaveFileDialog savSave;
-        private ListBox lstSoubory;
+        private ListBox lstFiles;
     }
 }
