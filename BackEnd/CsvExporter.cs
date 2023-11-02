@@ -11,7 +11,8 @@ using System.Globalization;
 namespace BackEnd {
     internal class CsvExporter : IExporter {
         public bool SaveTo(List<Employer> inputList, string outputPath) {
-            using var writer = new StreamWriter(outputPath);
+            FileStream fs = new(outputPath, FileMode.OpenOrCreate);
+            using StreamWriter writer = new (fs, Encoding.UTF8);
             var csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture) {
                 Delimiter = ";",
             };
@@ -26,7 +27,7 @@ namespace BackEnd {
         }
     }
 
-    public class EmployeeMap : ClassMap<Employee> {
+    internal class EmployeeMap : ClassMap<Employee> {
         public EmployeeMap() {
             Map(m => m.Company.CompanyName).Index(0).Name("CompanyName");
             //tohle není pěkné, ale nevidím důvod, proč poměrně velké operace
