@@ -25,5 +25,11 @@
             //jednoduchý remove
             InputPaths.Remove(path);
         }
+
+        public bool ValidateConfig() {
+            if (InputPaths == null || InputPaths.Count == 0) return false;
+            if (string.IsNullOrEmpty(OutputPath)) return false;
+            return true;
+        }
     }
 }
