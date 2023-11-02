@@ -13,7 +13,7 @@ namespace BackEnd {
         private List<Employer> _deserialised;
 
         public Converter(Config config) {
-            if(!config.ValidateConfig()) {
+            if (!config.ValidateConfig()) {
                 throw new InvalidDataException();
             }
             _deserialised = new();
@@ -21,6 +21,8 @@ namespace BackEnd {
 
         public bool Work() {
             Deserialize();
+            FilterUnemployed();
+            SortBoth();
             return true;
         }
 
@@ -33,6 +35,19 @@ namespace BackEnd {
                 var employer = (Employer)serializer.Deserialize(reader);
                 _deserialised.Add(employer);
             }
+        }
+
+        private void FilterUnemployed() {
+            foreach (Employer employer in _deserialised) {
+                employer.Employees = employer.Employees.Where(x => !string.IsNullOrEmpty(x.EmployedSince)).ToList();
+            }
+        }
+
+        private void SortBoth() {
+            foreach (Employer employer in _deserialised) {
+                employer.Employees.Sort();
+            }
+            _deserialised.Sort();
         }
     }
 }
