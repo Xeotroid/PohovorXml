@@ -14,14 +14,14 @@ namespace BackEnd {
         private static readonly log4net.ILog _log = LogHelper.GetLogger();
 
         public Converter(Config config) {
-            if (!config.ValidateConfig()) {
-                throw new InvalidDataException();
-            }
             _config = config;
             _deserialised = new();
         }
 
         public void Work() {
+            if (!_config.ValidateConfig()) {
+                throw new InvalidDataException();
+            }
             _log.Info($"Započata konverze do {_config.OutputPath}.");
             Deserialize();
             FilterUnemployed();

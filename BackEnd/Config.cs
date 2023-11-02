@@ -1,7 +1,9 @@
 ﻿namespace BackEnd {
     public class Config {
-        public List<string> InputPaths { get; private set; }
-        public string? OutputPath { get; set; }
+        private static readonly log4net.ILog _log = LogHelper.GetLogger();
+
+        public List<string> InputPaths { get; private set; } = new();
+        public string OutputPath { get; set; } = string.Empty;
         //možno dále rozšířit o další věci, které jsou pak passnuté
         //backendu - např. separator char pro CSV nebo výběr mezi
         //exportem do CSV a XLSX.
@@ -27,8 +29,14 @@
         }
 
         public bool ValidateConfig() {
-            if (InputPaths == null || InputPaths.Count == 0) return false;
-            if (string.IsNullOrEmpty(OutputPath)) return false;
+            if (InputPaths is null || InputPaths.Count == 0) {
+                _log.Error("Není stanoven žádný vstupní soubor.");
+                return false;
+            }
+            if (string.IsNullOrEmpty(OutputPath)) {
+                _log.Error("Není stanovena výstupní cesta.");
+                return false;
+            }
             return true;
         }
     }
