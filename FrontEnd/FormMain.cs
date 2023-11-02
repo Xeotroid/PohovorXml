@@ -1,3 +1,4 @@
+using Microsoft.VisualBasic;
 using System.Diagnostics;
 using System.IO;
 
@@ -39,10 +40,14 @@ namespace FrontEnd {
             }
             _config.OutputPath = savSave.FileName;
 
-            //TODO: nahradit bool nìèím jiným
-            var deserialiser = new BackEnd.Deserialiser(_config);
-            bool result = deserialiser.Work();
-            Debug.Print(result ? "Úspìch" : "Fail.");
+            var deserialiser = new BackEnd.Converter(_config);
+            try {
+                deserialiser.Work();
+                MessageBox.Show("Hotovo.", this.Name, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex) {
+                MessageBox.Show($"Pøi ukládání nastala chyba:\r\n{ex.Message}", this.Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void lstSoubory_SelectedValueChanged(object sender, EventArgs e) {
