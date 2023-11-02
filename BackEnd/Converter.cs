@@ -27,6 +27,7 @@ namespace BackEnd {
             SortBoth();
             AddEmployerReferences();
             IExporter exporter = new CsvExporter();
+            //null warning může být ignorován - config kontrolujeme v konstruktoru
             exporter.SaveTo(_deserialised, _config.OutputPath);
             return true;
         }
@@ -37,13 +38,16 @@ namespace BackEnd {
             foreach (string path in _config.InputPaths) {
                 using Stream reader = new FileStream(path, FileMode.Open);
                 var serializer = new XmlSerializer(typeof(Employer));
-                var employer = (Employer)serializer.Deserialize(reader);
-                _deserialised.Add(employer);
+                var employer = (Employer?)serializer.Deserialize(reader);
+                if (employer != null) {
+                    _deserialised.Add(employer);
+                }
             }
         }
 
         private void FilterUnemployed() {
             foreach (Employer employer in _deserialised) {
+                if (employer.Employees == null) continue;
                 employer.Employees = employer.Employees.Where(x => !string.IsNullOrEmpty(x.EmployedSince)).ToList();
             }
         }
@@ -51,12 +55,13 @@ namespace BackEnd {
         private void MergeEmployers() {
             List<Employer> merged = new();
             foreach (Employer emp in _deserialised) {
-                Employer matching = merged.Find(x => x.CompanyName == emp.CompanyName);
+                Employer? matching = merged.Find(x => x.CompanyName == emp.CompanyName);
                 if (matching == null) {
                     Debug.Print($"Not found, adding");
                     merged.Add(emp);
                 } else {
                     Debug.Print($"Found, merging");
+                    if (matching.Employees == null || emp.Employees == null) continue;
                     matching.Employees = matching.Employees.Concat(emp.Employees).ToList();
                 }
             }
@@ -65,6 +70,7 @@ namespace BackEnd {
 
         private void SortBoth() {
             foreach (Employer employer in _deserialised) {
+                if (employer.Employees == null) continue;
                 employer.Employees.Sort();
             }
             _deserialised.Sort();
@@ -72,6 +78,7 @@ namespace BackEnd {
 
         private void AddEmployerReferences() {
             foreach (Employer employer in _deserialised) {
+                if (employer.Employees == null) continue;
                 foreach (Employee employee in employer.Employees) {
                     employee.Company = employer;
                 }

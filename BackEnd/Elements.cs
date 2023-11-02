@@ -34,7 +34,7 @@ namespace BackEnd {
         [XmlElement]
         public string? EmployedSince { get; set; }
 
-        public Employer Company { get; set; }
+        public Employer? Company { get; set; }
 
         public int GetEmployeeNumber() {
             return Id;
@@ -75,6 +75,9 @@ namespace BackEnd {
         public string? City { get; set; }
 
         public string GetFullAddress() {
+            if (string.IsNullOrEmpty(City)) {
+                throw new FormatException("Neznámé město zaměstnance!");
+            }
             if (string.IsNullOrEmpty(Street)) {
                 return City;
             }
