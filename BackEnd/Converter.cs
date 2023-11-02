@@ -16,13 +16,18 @@ namespace BackEnd {
             if (!config.ValidateConfig()) {
                 throw new InvalidDataException();
             }
+            _config = config;
             _deserialised = new();
         }
 
         public bool Work() {
             Deserialize();
             FilterUnemployed();
+            MergeEmployers();
             SortBoth();
+            AddEmployerReferences();
+            IExporter exporter = new CsvExporter();
+            exporter.SaveTo(_deserialised, _config.OutputPath);
             return true;
         }
 
@@ -43,11 +48,34 @@ namespace BackEnd {
             }
         }
 
+        private void MergeEmployers() {
+            List<Employer> merged = new();
+            foreach (Employer emp in _deserialised) {
+                Employer matching = merged.Find(x => x.CompanyName == emp.CompanyName);
+                if (matching == null) {
+                    Debug.Print($"Not found, adding");
+                    merged.Add(emp);
+                } else {
+                    Debug.Print($"Found, merging");
+                    matching.Employees = matching.Employees.Concat(emp.Employees).ToList();
+                }
+            }
+            _deserialised = merged;
+        }
+
         private void SortBoth() {
             foreach (Employer employer in _deserialised) {
                 employer.Employees.Sort();
             }
             _deserialised.Sort();
+        }
+
+        private void AddEmployerReferences() {
+            foreach (Employer employer in _deserialised) {
+                foreach (Employee employee in employer.Employees) {
+                    employee.Company = employer;
+                }
+            }
         }
     }
 }
