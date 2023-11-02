@@ -52,7 +52,10 @@ namespace BackEnd {
 
         public string GetEmployedSince() {
             //TODO: Změnit na parsování a reformátování datetime stringu
-            return EmployedSince.Substring(0, 10);
+            if(DateTime.TryParse(EmployedSince, out DateTime dt)) {
+                return dt.ToString("yyyy-MM-dd");
+            }
+            throw new FormatException("Nesprávný formát datumu!");
         }
 
         public int CompareTo(Employee? other) {
