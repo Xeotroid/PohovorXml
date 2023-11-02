@@ -11,7 +11,7 @@ namespace BackEnd {
     public class Converter {
         private Config _config;
         private List<Employer> _deserialised;
-        private static readonly log4net.ILog _log = log4net.LogManager.GetLogger("Converter.cs");
+        private static readonly log4net.ILog _log = LogHelper.GetLogger();
 
         public Converter(Config config) {
             if (!config.ValidateConfig()) {

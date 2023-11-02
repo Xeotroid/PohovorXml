@@ -13,7 +13,9 @@ namespace FrontEnd {
             _config = new();
             //"One important thing to note is that your main runnable project MUST be
             //the first project that calls the LogManager.GetLogger method."
+            //Opravdu bych to chtìl vyøešit jinak...
             _log = log4net.LogManager.GetLogger("FormMain.cs");
+            _log = BackEnd.LogHelper.GetLogger();
         }
 
         private void btnLoad_Click(object sender, EventArgs e) {
