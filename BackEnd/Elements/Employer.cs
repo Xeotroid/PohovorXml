@@ -19,5 +19,7 @@ namespace BackEnd {
         public void Sort() {
             Employees.Sort();
         }
+
+        public void RemoveAll(Predicate<Employee> predicate) => Employees?.RemoveAll(predicate);
     }
 }

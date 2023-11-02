@@ -17,6 +17,8 @@ namespace BackEnd
 
         public Employer? ParentEmployer { get; set; }
 
+        public bool IsUnemployed => string.IsNullOrEmpty(EmployedSince);
+
         public int GetEmployeeNumber() {
             return Id;
         }
