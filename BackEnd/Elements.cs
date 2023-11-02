@@ -8,9 +8,9 @@ using System.Xml.Serialization;
 namespace BackEnd {
     public class Employer : IComparable<Employer> {
         [XmlElement]
-        public string? CompanyName { get; set; }
+        public string CompanyName { get; set; } = string.Empty;
         [XmlArray]
-        public List<Employee>? Employees { get; set; }
+        public List<Employee> Employees { get; set; } = new();
 
         public int CompareTo(Employer? other) {
             if (other == null)
@@ -20,6 +20,10 @@ namespace BackEnd {
             else
                 return CompanyName.CompareTo(other.CompanyName);
         }
+
+        public void Sort() {
+            Employees.Sort();
+        }
     }
 
     public class Employee : IComparable<Employee> {
@@ -27,13 +31,13 @@ namespace BackEnd {
         [XmlElement]
         public int Id { get; set; }
         [XmlElement]
-        public string? FirstName { get; set; }
+        public string FirstName { get; set; } = string.Empty;
         [XmlElement]
-        public string? LastName { get; set; }
+        public string LastName { get; set; } = string.Empty;
         [XmlElement]
-        public AddressElement? Address { get; set; }
+        public AddressElement Address { get; set; } = new();
         [XmlElement]
-        public string? EmployedSince { get; set; }
+        public string EmployedSince { get; set; } = string.Empty;
 
         public Employer? ParentEmployer { get; set; }
 
@@ -72,11 +76,11 @@ namespace BackEnd {
     public class AddressElement {
         static readonly log4net.ILog _log = LogHelper.GetLogger();
         [XmlElement]
-        public string? Street { get; set; }
+        public string Street { get; set; } = string.Empty;
         [XmlElement]
         public int? StreetNo { get; set; }
         [XmlElement]
-        public string? City { get; set; }
+        public string City { get; set; } = string.Empty;
 
         public Employee? ParentEmployee;
 
