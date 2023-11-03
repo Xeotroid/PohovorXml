@@ -17,6 +17,11 @@
             };
         }
 
+        /// <summary>
+        /// Přidá cestu k souboru do seznamu souborů k převodu. Je provedena kontrola duplikátů.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public bool AddInputFile(string path) {
             //zkontrolovat, zda už soubor není v seznamu
             //pokud ano, jednoduše return
@@ -33,6 +38,10 @@
             InputPaths.Remove(path);
         }
 
+        /// <summary>
+        /// Ověří, zda proměnné v konfiguraci mají platné hodnoty.
+        /// </summary>
+        /// <returns></returns>
         public bool ValidateConfig() {
             if (InputPaths is null || InputPaths.Count == 0) {
                 _log.Error("Není stanoven žádný vstupní soubor.");

@@ -17,12 +17,23 @@ namespace BackEnd
 
         public Employer? ParentEmployer { get; set; }
 
+        /// <summary>
+        /// Pokud zaměstnanec nemá platnou hodnotu data zaměstnání, je považován za nezaměstnaného.
+        /// </summary>
         public bool IsUnemployed => EmployedSince == "";
 
+        /// <summary>
+        /// Vrátí ID zaměstnance.
+        /// </summary>
+        /// <returns></returns>
         public int GetEmployeeNumber() {
             return Id;
         }
 
+        /// <summary>
+        /// Vrátí plné jméno zaměstnance se správnými velikostmi písmen.
+        /// </summary>
+        /// <returns>Plné jméno zaměstnance, při neexistujícím křestním jméně nebo příjmení "CHYBA".</returns>
         public string GetFullName() {
             if (FirstName == "" || LastName == "") {
                 _log.Error($"Jméno nebo příjmení zaměstnance {Id} není uvedeno.");
@@ -34,6 +45,10 @@ namespace BackEnd
             return $"{last} {first}";
         }
 
+        /// <summary>
+        /// Vrátí datum zaměstnání ve formátu yyyy-MM-dd.
+        /// </summary>
+        /// <returns>Platný datestring, při neplatném vstupním formátu "CHYBA".</returns>
         public string GetEmployedSince() {
             //TODO: Změnit na parsování a reformátování datetime stringu
             if(DateTime.TryParse(EmployedSince, out DateTime dt)) {
@@ -43,6 +58,11 @@ namespace BackEnd
             return "CHYBA";
         }
 
+        /// <summary>
+        /// Porovnání s ostatními zaměstnanci podle plného jména (příjmení-křestní)
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
         public int CompareTo(Employee? other) {
             if (other == null)
                 return 1;

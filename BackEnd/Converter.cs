@@ -15,6 +15,10 @@ namespace BackEnd {
             _deserialised = new();
         }
 
+        /// <summary>
+        /// Provede deserializaci, transformaci a uložení dat do výstupního souboru.
+        /// </summary>
+        /// <exception cref="InvalidDataException"></exception>
         public void Work() {
             if (!_config.ValidateConfig()) {
                 throw new InvalidDataException();

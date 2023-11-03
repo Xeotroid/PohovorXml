@@ -35,6 +35,9 @@ namespace FrontEnd {
                 return;
             }
             _config.OutputPath = savSave.FileName;
+            //Chtìlo by to nìjakou register metodu, která po spuštìní naplní dialogfilter
+            //a tøeba nìjaký slovník nebo pole v BackEnd.Config, aby se nový formát dal
+            //v GUI nastavit z jednoho místa, ale to už nestíhám.
             _config.SetExportFormat(GetCurrentDialogFilter(savSave).Substring(2));
             DoConvert();
         }

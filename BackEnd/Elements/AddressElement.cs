@@ -16,6 +16,10 @@ namespace BackEnd
 
         public Employee? ParentEmployee;
 
+        /// <summary>
+        /// Vrátí úplnou adresu podle dostupných údajů.
+        /// </summary>
+        /// <returns>Platná adresa, při nedostatečných údajích "CHYBA".</returns>
         public string GetFullAddress()
         {
             if (City == "")

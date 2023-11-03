@@ -7,6 +7,11 @@ namespace BackEnd {
         [XmlArray]
         public List<Employee> Employees { get; set; } = new();
 
+        /// <summary>
+        /// Porovnání s ostatními zaměstnavateli podle názvu.
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
         public int CompareTo(Employer? other) {
             if (other == null)
                 return 1;
