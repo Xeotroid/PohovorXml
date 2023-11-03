@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BackEnd {
+﻿namespace BackEnd {
     static class StrExtensions {
         public static string FirstUpper(this string str) {
             if (string.IsNullOrEmpty(str)) return str;

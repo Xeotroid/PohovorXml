@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿global using System;
+global using System.Collections.Generic;
+global using System.Linq;
+global using System.Text;
 using System.Xml.Serialization;
 
 namespace BackEnd {

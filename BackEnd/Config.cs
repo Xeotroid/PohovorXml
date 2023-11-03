@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-namespace BackEnd {
+﻿namespace BackEnd {
     public class Config {
         private static readonly log4net.ILog _log = LogHelper.GetLogger();
 

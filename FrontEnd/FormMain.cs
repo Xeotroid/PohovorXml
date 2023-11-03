@@ -1,9 +1,3 @@
-using log4net;
-using Microsoft.VisualBasic;
-using System.Diagnostics;
-using System.IO;
-using System.Windows.Forms;
-
 namespace FrontEnd {
     public partial class FormMain : Form {
         private BackEnd.Config _config;
