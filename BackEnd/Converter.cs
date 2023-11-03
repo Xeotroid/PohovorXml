@@ -28,7 +28,7 @@ namespace BackEnd {
             MergeEmployers();
             SortAll();
             AddParentReferences();
-            IExporter exporter = new CsvExporter();
+            var exporter = (IExporter)Activator.CreateInstance(_config.Exporter)!;
             exporter.SaveTo(_deserialised, _config.OutputPath!);
         }
 

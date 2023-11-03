@@ -2,6 +2,7 @@ using log4net;
 using Microsoft.VisualBasic;
 using System.Diagnostics;
 using System.IO;
+using System.Windows.Forms;
 
 namespace FrontEnd {
     public partial class FormMain : Form {
@@ -23,11 +24,10 @@ namespace FrontEnd {
                 return;
             }
             LoadFiles(opnOpen.FileNames);
-            UpdateSaveButton();
         }
 
         private void btnDelete_Click(object sender, EventArgs e) {
-            while(lstFiles.SelectedItems.Count > 0) {
+            while (lstFiles.SelectedItems.Count > 0) {
                 var path = lstFiles.SelectedItems[0];
                 _config.RemoveInputFile(path.ToString()!);
                 lstFiles.Items.Remove(path);
@@ -41,17 +41,8 @@ namespace FrontEnd {
                 return;
             }
             _config.OutputPath = savSave.FileName;
-
-            var deserialiser = new BackEnd.Converter(_config);
-            try {
-                deserialiser.Work();
-                _log.Info("Konverze dokonèena.");
-                MessageBox.Show("Hotovo.", this.Name, MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            catch (Exception ex) {
-                _log.Fatal("Pøi konverzi nastala chyba.", ex);
-                MessageBox.Show($"Pøi ukládání nastala chyba:\r\n{ex.Message}", this.Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            _config.SetExportFormat(GetCurrentDialogFilter(savSave).Substring(2));
+            DoConvert();
         }
 
         private void lstFiles_SelectedValueChanged(object sender, EventArgs e) {
@@ -79,11 +70,29 @@ namespace FrontEnd {
                     lstFiles.Items.Add(path);
                 }
             }
+            UpdateSaveButton();
         }
 
         private void UpdateSaveButton() {
             btnSave.Enabled = lstFiles.Items.Count > 0;
         }
 
+        private void DoConvert() {
+            var deserialiser = new BackEnd.Converter(_config);
+            try {
+                deserialiser.Work();
+                _log.Info("Konverze dokonèena.");
+                MessageBox.Show("Hotovo.", this.Name, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex) {
+                _log.Fatal("Pøi konverzi nastala chyba.", ex);
+                MessageBox.Show($"Pøi ukládání nastala chyba:\r\n{ex.Message}", this.Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private string GetCurrentDialogFilter(FileDialog dialog) {
+            string[] filterstring = dialog.Filter.Split('|');
+            return filterstring[(dialog.FilterIndex - 1) * 2 + 1];
+        }
     }
 }
