@@ -1,9 +1,3 @@
-using log4net;
-using Microsoft.VisualBasic;
-using System.Diagnostics;
-using System.IO;
-using System.Windows.Forms;
-
 namespace FrontEnd {
     public partial class FormMain : Form {
         private BackEnd.Config _config;
@@ -41,6 +35,9 @@ namespace FrontEnd {
                 return;
             }
             _config.OutputPath = savSave.FileName;
+            //Chtìlo by to nìjakou register metodu, která po spuštìní naplní dialogfilter
+            //a tøeba nìjaký slovník nebo pole v BackEnd.Config, aby se nový formát dal
+            //v GUI nastavit z jednoho místa, ale to už nestíhám.
             _config.SetExportFormat(GetCurrentDialogFilter(savSave).Substring(2));
             DoConvert();
         }
@@ -81,11 +78,11 @@ namespace FrontEnd {
             var deserialiser = new BackEnd.Converter(_config);
             try {
                 deserialiser.Work();
-                _log.Info("Konverze dokonèena.");
+                _log!.Info("Konverze dokonèena.");
                 MessageBox.Show("Hotovo.", this.Name, MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex) {
-                _log.Fatal("Pøi konverzi nastala chyba.", ex);
+                _log!.Fatal("Pøi konverzi nastala chyba.", ex);
                 MessageBox.Show($"Pøi ukládání nastala chyba:\r\n{ex.Message}", this.Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }

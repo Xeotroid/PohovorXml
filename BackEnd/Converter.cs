@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿global using System;
+global using System.Collections.Generic;
+global using System.Linq;
+global using System.Text;
 using System.Xml.Serialization;
 
 namespace BackEnd {
@@ -18,6 +15,10 @@ namespace BackEnd {
             _deserialised = new();
         }
 
+        /// <summary>
+        /// Provede deserializaci, transformaci a uložení dat do výstupního souboru.
+        /// </summary>
+        /// <exception cref="InvalidDataException"></exception>
         public void Work() {
             if (!_config.ValidateConfig()) {
                 throw new InvalidDataException();
@@ -38,9 +39,15 @@ namespace BackEnd {
             foreach (string path in _config.InputPaths) {
                 using Stream reader = new FileStream(path, FileMode.Open);
                 var serializer = new XmlSerializer(typeof(Employer));
-                var employer = (Employer?)serializer.Deserialize(reader);
-                if (employer != null) {
-                    _deserialised.Add(employer);
+                try {
+                    var employer = (Employer?)serializer.Deserialize(reader);
+                    if (employer != null) {
+                        _deserialised.Add(employer);
+                    }
+                }
+                catch {
+                    _log.Error($"Chyba při serializaci souboru {path}.");
+                    continue;
                 }
             }
         }

@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Runtime.CompilerServices;
 
 namespace BackEnd {
     public class LogHelper {
+        /// <summary>
+        /// Vrátí log4net logger s absolutní cestou k souboru s volanou metodou.
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <returns></returns>
         public static log4net.ILog GetLogger([CallerFilePath]string filename = "") {
             return log4net.LogManager.GetLogger(filename);
         }
