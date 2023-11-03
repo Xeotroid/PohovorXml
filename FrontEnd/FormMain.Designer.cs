@@ -44,7 +44,7 @@
             // btnSave
             // 
             btnSave.Enabled = false;
-            btnSave.Location = new Point(116, 233);
+            btnSave.Location = new Point(116, 232);
             btnSave.Name = "btnSave";
             btnSave.Size = new Size(86, 34);
             btnSave.TabIndex = 2;
@@ -71,7 +71,7 @@
             // savSave
             // 
             savSave.DefaultExt = "csv";
-            savSave.Filter = "CSV soubory|*.csv";
+            savSave.Filter = "CSV soubory|*.csv|XLSX soubory|*.xlsx";
             // 
             // lstFiles
             // 
