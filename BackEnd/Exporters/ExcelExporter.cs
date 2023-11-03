@@ -20,8 +20,6 @@ namespace BackEnd {
                 WriteAllEmployees(inputList);
                 AutoWidth();
                 _sheet.SaveAs2(outputPath);
-                _excel.ActiveWorkbook.Saved = true;
-                _excel.Quit();
             }
             catch {
                 _log.Fatal("Při zápisu do Excel souboru nastala chyba.");
@@ -30,6 +28,7 @@ namespace BackEnd {
             finally {
                 if (_excel is not null) {
                     _excel.ActiveWorkbook.Saved = true;
+                    _excel.ActiveWorkbook.Close();
                     _excel.Quit();
                 }
             }
