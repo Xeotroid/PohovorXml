@@ -39,9 +39,15 @@ namespace BackEnd {
             foreach (string path in _config.InputPaths) {
                 using Stream reader = new FileStream(path, FileMode.Open);
                 var serializer = new XmlSerializer(typeof(Employer));
-                var employer = (Employer?)serializer.Deserialize(reader);
-                if (employer != null) {
-                    _deserialised.Add(employer);
+                try {
+                    var employer = (Employer?)serializer.Deserialize(reader);
+                    if (employer != null) {
+                        _deserialised.Add(employer);
+                    }
+                }
+                catch {
+                    _log.Error($"Chyba při serializaci souboru {path}.");
+                    continue;
                 }
             }
         }
