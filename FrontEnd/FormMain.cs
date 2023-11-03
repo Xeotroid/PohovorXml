@@ -75,11 +75,11 @@ namespace FrontEnd {
             var deserialiser = new BackEnd.Converter(_config);
             try {
                 deserialiser.Work();
-                _log.Info("Konverze dokonèena.");
+                _log!.Info("Konverze dokonèena.");
                 MessageBox.Show("Hotovo.", this.Name, MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex) {
-                _log.Fatal("Pøi konverzi nastala chyba.", ex);
+                _log!.Fatal("Pøi konverzi nastala chyba.", ex);
                 MessageBox.Show($"Pøi ukládání nastala chyba:\r\n{ex.Message}", this.Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
