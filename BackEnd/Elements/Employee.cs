@@ -29,8 +29,8 @@ namespace BackEnd
                 return "CHYBA";
             }
 
-            string first = FirstName.FirstUpper();
-            string last = LastName.FirstUpper();
+            string first = FirstName.FirstLettersUpper();
+            string last = LastName.FirstLettersUpper();
             return $"{last} {first}";
         }
 
